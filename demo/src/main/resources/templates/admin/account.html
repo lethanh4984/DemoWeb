@@ -349,7 +349,7 @@
                                             <div class="modal-body">
                                                 <form enctype="multipart/form-data" th:action="@{/admin/update}"
                                                       method="post">
-                                                    <input type="hidden" name="user" th:value="${user.id}">
+                                                    <input type="hidden" name="userId" th:value="${user.id}">
                                                     <div class="row">
                                                         <div class="col-6">
                                                             <label for="addname"
@@ -389,15 +389,12 @@
                                                             <input readonly type="hidden" class="form-control"
                                                                    id="addname" name="password" required>
                                                             <input readonly type="hidden" class="form-control"
-                                                                   id="addname" name="role" required>
+                                                                   id="addname" name="roleId" required>
                                                         </div>
                                                         <div class="col-6">
                                                             <label for="ct_id" class="col-form-label">Vai trò:</label>
-                                                            <select class="form-control" id="ct_id" name="roleId"
+                                                            <select class="form-control" id="ct_id" name="role.id"
                                                                     required>
-
-                                                                <!--                                                                        <option th:value=1 selected>Admin</option>-->
-                                                                <!--                                                                        <option th:value=2>User</option>-->
 
                                                                 <option th:value=1 selected>
                                                                     Admin
