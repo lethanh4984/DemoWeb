@@ -13,4 +13,6 @@ public interface AppDAO {
     List<User> findUsersByRoleId(int theId);
 
     void updateUser(User user);
+
+    User findUserById(int theId);
 }

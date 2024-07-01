@@ -27,8 +27,10 @@ public class AppDAOImpl implements AppDAO{
     public void deleteUserById(int theId) {
         User user = entityManager.find(User.class,theId);
 
+        //make foreignkey = null
         user.setRole(null);
 
+        //delete
         entityManager.remove(user);
     }
 
@@ -48,12 +50,19 @@ public class AppDAOImpl implements AppDAO{
 
     @Override
     @Transactional
+    public void updateUser(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
+    @Transactional
     public void saveUser(User user) {
         entityManager.persist(user);
     }
 
+
     @Override
-    public void updateUser(User user) {
-        entityManager.merge(user);
+    public User findUserById(int theId) {
+        return entityManager.find(User.class,theId);
     }
 }

@@ -121,8 +121,31 @@ public class DemoController {
         return "redirect:/admin/list";
     }
 
+//    @PostMapping("/update")
+//    public String updateUser(int userId){
+//        User user = appDAO.findUserById(userId);
+//
+//        appDAO.updateUser(user);
+//
+//        return "redirect:/admin/list";
+//    }
+
     @PostMapping("/update")
-    public void updateUser(@ModelAttribute User user){
-        appDAO.updateUser(user);
+    public String updateUser(@ModelAttribute User user){
+
+
+        User tempUser = appDAO.findUserById(user.getId());
+
+        tempUser.setFullName(user.getFullName());
+        tempUser.setPhoneNumber(user.getPhoneNumber());
+        tempUser.setAddress(user.getAddress());
+
+        Role role = roleService.findRole(user.getRole().getId());
+        tempUser.setRole(role);
+
+        appDAO.updateUser(tempUser);
+
+        return "redirect:/admin/list";
     }
+
 }
