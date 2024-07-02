@@ -222,7 +222,7 @@
                                         </button>
                                         <form th:if="${user.status == 1}" th:action="@{/admin/lock}" method="post"
                                               style="margin-left: 85px;margin-top: -38px">
-                                            <input type="hidden" class="form-control" id="id" name="idUser"
+                                            <input type="hidden" class="form-control" id="id" name="userId"
                                                    th:value="${user.id}">
                                             <button type="submit" style="width: 80px" class="btn btn-danger">
                                                 Khóa
@@ -230,7 +230,7 @@
                                         </form>
 
                                         <form th:if="${user.status == 0}" th:action="@{/admin/unlock}" method="post">
-                                            <input type="hidden" class="form-control" id="id" name="idUser"
+                                            <input type="hidden" class="form-control" id="id" name="userId"
                                                    th:value="${user.id}">
                                             <button type="submit" style="width: 80px" class="btn btn-success">
                                                 Mở

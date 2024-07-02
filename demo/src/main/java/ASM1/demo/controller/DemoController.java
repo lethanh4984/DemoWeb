@@ -30,14 +30,14 @@ public class DemoController {
 
     private AppDAO appDAO;
 
-    public DemoController(RoleService roleService, UserService userService,AppDAO appDAO) {
+    public DemoController(RoleService roleService, UserService userService, AppDAO appDAO) {
         this.roleService = roleService;
         this.userService = userService;
-        this.appDAO=appDAO;
+        this.appDAO = appDAO;
     }
 
     @GetMapping("/home")
-    public String adminPage(){
+    public String adminPage() {
         return "admin/home";
     }
 
@@ -50,7 +50,7 @@ public class DemoController {
         // add to the spring model
         theModel.addAttribute("users", theUser);
 
-        for(User user : theUser){
+        for (User user : theUser) {
             System.out.println(user);
         }
         return "admin/account";
@@ -59,14 +59,14 @@ public class DemoController {
 
 
     @PostMapping("/save")
-    public String saveNewUser(@ModelAttribute User user){
+    public String saveNewUser(@ModelAttribute User user) {
         //save user
 
         UserMapper userMapper = new UserMapper();
 
-        UserDTO userDTO=userMapper.toUserDTO(user);
+        UserDTO userDTO = userMapper.toUserDTO(user);
 
-        Role role= roleService.findRole(userDTO.getRoleId());
+        Role role = roleService.findRole(userDTO.getRoleId());
 
         User newUser = new User();
 
@@ -97,24 +97,44 @@ public class DemoController {
     }
 
     @GetMapping("/search")
-    public String searchInfo(Model theModel, String searchInfo){
+    public String searchInfo(Model theModel, String searchInfo) {
         List<User> userSearchByEmail = userService.findByEmailContaining(searchInfo);
 
         List<User> userSearchByPhone = userService.findByPhoneNumberContaining(searchInfo);
 
-        theModel.addAttribute("users",userSearchByEmail);
+        theModel.addAttribute("users", userSearchByEmail);
 
-        theModel.addAttribute("users",userSearchByPhone);
+        theModel.addAttribute("users", userSearchByPhone);
 
         return "/admin/usersSearch";
     }
 
-//    @PostMapping("/lock")
+    @PostMapping("/lock")
+    public String lockFunction(@RequestParam("userId") int id) {
 
-//    @GetMapping("/unlock")
+        User user = userService.findUser(id);
+
+        user.setStatus(0);
+
+        userService.save(user);
+
+        return "redirect:/admin/list";
+    }
+
+
+    @PostMapping("/unlock")
+    public String unlockFunction(@RequestParam("userId") int id) {
+        User user = userService.findUser(id);
+
+        user.setStatus(1);
+
+        userService.save(user);
+        return "redirect:/admin/list";
+    }
+
 
     @PostMapping("/delete")
-    public String deleteUser(@RequestParam("userId")int theId ){
+    public String deleteUser(@RequestParam("userId") int theId) {
 
         appDAO.deleteUserById(theId);
 
@@ -128,7 +148,7 @@ public class DemoController {
                              @RequestParam("phoneNumber") String phoneNumber,
                              @RequestParam("address") String address,
                              @RequestParam("role.id") int roleId
-                             ){
+    ) {
         Role role = roleService.findRole(roleId);
         User tempUser = appDAO.findUserById(id);
 
