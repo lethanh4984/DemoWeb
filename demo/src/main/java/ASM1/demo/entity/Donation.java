@@ -41,6 +41,11 @@ public class Donation {
     @Column(name = "status")
     private int status;
 
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH})
+    @JoinColumn(name = "donation_status_id")
+    private DonationStatus donationStatus;
+
+
     @Override
     public String toString() {
         return "Donation{" +
@@ -55,7 +60,31 @@ public class Donation {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", status=" + status +
+                ", donationStatus=" + donationStatus +
                 '}';
+    }
+
+    public Donation(String code, String created, String description, DonationStatus donationStatus, String endDate, int id, int money, String name, String organizationName, String phoneNumber, String startDate, int status) {
+        this.code = code;
+        this.created = created;
+        this.description = description;
+        this.donationStatus = donationStatus;
+        this.endDate = endDate;
+        this.id = id;
+        this.money = money;
+        this.name = name;
+        this.organizationName = organizationName;
+        this.phoneNumber = phoneNumber;
+        this.startDate = startDate;
+        this.status = status;
+    }
+
+    public DonationStatus getDonatonStatus() {
+        return donationStatus;
+    }
+
+    public void setDonatonStatus(DonationStatus donationStatus) {
+        this.donationStatus = donationStatus;
     }
 
     public String getCode() {
@@ -145,4 +174,9 @@ public class Donation {
     public void setStatus(int status) {
         this.status = status;
     }
+
+
+    public Donation() {
+    }
+
 }

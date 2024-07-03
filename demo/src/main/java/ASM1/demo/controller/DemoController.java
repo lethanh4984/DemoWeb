@@ -1,24 +1,20 @@
 package ASM1.demo.controller;
 
-
-import ASM1.demo.DAO.AppDAO;
 import ASM1.demo.DTO.UserDTO;
 import ASM1.demo.DTO.UserMapper;
+import ASM1.demo.entity.Donation;
+import ASM1.demo.entity.DonationStatus;
 import ASM1.demo.entity.Role;
 import ASM1.demo.entity.User;
-import ASM1.demo.repository.RoleRepository;
+import ASM1.demo.service.DonationService;
 import ASM1.demo.service.RoleService;
 import ASM1.demo.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-//tìm cách thêm roleId từ form
-// save hoặc delete bằng DAO trong phan 09-spring-boot-jpa-advanced-mappings
 
 @Controller
 @RequestMapping("/admin")
@@ -28,12 +24,13 @@ public class DemoController {
 
     private RoleService roleService;
 
-    private AppDAO appDAO;
+    private DonationService donationService;
 
-    public DemoController(RoleService roleService, UserService userService, AppDAO appDAO) {
+
+    public DemoController(RoleService roleService, UserService userService, DonationService donationService) {
         this.roleService = roleService;
         this.userService = userService;
-        this.appDAO = appDAO;
+        this.donationService = donationService;
     }
 
     @GetMapping("/home")
@@ -50,9 +47,6 @@ public class DemoController {
         // add to the spring model
         theModel.addAttribute("users", theUser);
 
-        for (User user : theUser) {
-            System.out.println(user);
-        }
         return "admin/account";
 
     }
@@ -78,23 +72,14 @@ public class DemoController {
         newUser.setPassword(userDTO.getPassword());
         newUser.setPhoneNumber(userDTO.getPhoneNumber());
 
-        appDAO.saveUser(newUser);
+        userService.save(newUser);
 
 
         return "redirect:/admin/list";
     }
 
 
-    @GetMapping("/donation")
-    public String showDonation(Model theModel) {
 
-        // create model attribute to bind form data
-        User theUser = new User();
-
-        theModel.addAttribute("user", theUser);
-
-        return "admin/donation";
-    }
 
     @GetMapping("/search")
     public String searchInfo(Model theModel, String searchInfo) {
@@ -136,7 +121,12 @@ public class DemoController {
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("userId") int theId) {
 
-        appDAO.deleteUserById(theId);
+        User user = userService.findUser(theId);
+
+        //set foreign key = null to delete
+        user.setRole(null);
+
+        userService.deleteById(theId);
 
         return "redirect:/admin/list";
     }
@@ -150,7 +140,7 @@ public class DemoController {
                              @RequestParam("role.id") int roleId
     ) {
         Role role = roleService.findRole(roleId);
-        User tempUser = appDAO.findUserById(id);
+        User tempUser = userService.findUser(id);
 
         tempUser.setFullName(fullName);
         tempUser.setPhoneNumber(phoneNumber);
@@ -158,9 +148,68 @@ public class DemoController {
 
         tempUser.setRole(role);
 
-        appDAO.updateUser(tempUser);
+        userService.save(tempUser);
 
         return "redirect:/admin/list";
     }
+
+
+    @GetMapping("/donation")
+    public String showDonation(Model theModel) {
+
+        // create model attribute to bind form data
+        List<Donation> donations = donationService.donations();
+
+        theModel.addAttribute("donationList", donations);
+
+
+        return "admin/donation";
+    }
+
+    @PostMapping("/saveDonation")
+    public String saveDonation(@ModelAttribute Donation donation){
+
+        Donation newDonation = new Donation();
+
+        newDonation.setCode(donation.getCode());
+        newDonation.setName(donation.getName());
+        newDonation.setPhoneNumber(donation.getPhoneNumber());
+        newDonation.setStartDate(donation.getStartDate());
+        newDonation.setEndDate(donation.getEndDate());
+        newDonation.setOrganizationName(donation.getOrganizationName());
+        newDonation.setDescription(donation.getDescription());
+
+        donationService.save(newDonation);
+
+        return  "redirect:/admin/donation";
+    }
+
+    @PostMapping("/updateDonation")
+    public String updateDonation(@RequestParam("code")String code,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("start") String startDate,
+                                 @RequestParam("end") String endDate,
+                                 @RequestParam("organizationName") String organnizationName,
+                                 @RequestParam("phoneNumber") String phoneNumber,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("donationId")int id){
+
+        Donation tempDonation = donationService.findById(id);
+
+        tempDonation.setName(name);
+        tempDonation.setCode(code);
+        tempDonation.setDescription(description);
+        tempDonation.setPhoneNumber(phoneNumber);
+        tempDonation.setStartDate(startDate);
+        tempDonation.setEndDate(endDate);
+        tempDonation.setOrganizationName(organnizationName);
+
+
+        donationService.save(tempDonation);
+
+        return  "redirect:/admin/donation";
+    }
+
+
 
 }
