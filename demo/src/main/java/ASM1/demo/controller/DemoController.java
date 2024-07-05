@@ -3,7 +3,6 @@ package ASM1.demo.controller;
 import ASM1.demo.DTO.UserDTO;
 import ASM1.demo.DTO.UserMapper;
 import ASM1.demo.entity.Donation;
-import ASM1.demo.entity.DonationStatus;
 import ASM1.demo.entity.Role;
 import ASM1.demo.entity.User;
 import ASM1.demo.service.DonationService;
@@ -54,7 +53,7 @@ public class DemoController {
 
     @PostMapping("/save")
     public String saveNewUser(@ModelAttribute User user) {
-        //save user
+
 
         UserMapper userMapper = new UserMapper();
 
@@ -154,6 +153,7 @@ public class DemoController {
     }
 
 
+    //show list donation from database
     @GetMapping("/donation")
     public String showDonation(Model theModel) {
 
@@ -162,10 +162,11 @@ public class DemoController {
 
         theModel.addAttribute("donationList", donations);
 
-
         return "admin/donation";
     }
 
+
+    //create new donation
     @PostMapping("/saveDonation")
     public String saveDonation(@ModelAttribute Donation donation){
 
@@ -179,11 +180,14 @@ public class DemoController {
         newDonation.setOrganizationName(donation.getOrganizationName());
         newDonation.setDescription(donation.getDescription());
 
+
+
         donationService.save(newDonation);
 
         return  "redirect:/admin/donation";
     }
 
+    //update donation
     @PostMapping("/updateDonation")
     public String updateDonation(@RequestParam("code")String code,
                                  @RequestParam("name") String name,
@@ -210,6 +214,25 @@ public class DemoController {
         return  "redirect:/admin/donation";
     }
 
+    @PostMapping("/deleteDonation")
+    public String delete(@RequestParam("donationId") int donationId){
+        //Note: if status == 0 show info of donation ; if status == 1 hide info
 
+        Donation donation = donationService.findById(donationId);
+
+        //set up status to show and hide info
+        if(donation.getStatus() == 0){
+            donation.setStatus(1);
+        }
+
+        donationService.save(donation);
+
+        return  "redirect:/admin/donation";
+    }
+
+    @GetMapping("/donation/{donationId}")
+    public void showDonation(@RequestParam("donation.id") int id){
+        donationService.findById(id);
+    }
 
 }

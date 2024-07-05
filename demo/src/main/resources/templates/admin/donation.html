@@ -143,6 +143,8 @@
                                                                   rows="5"></textarea>
                                                     </label>
                                                 </div>
+
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -201,10 +203,11 @@
                                             Cập nhật
                                         </button>
 
-                                        <a style="width: 105px" class="btn btn-warning"
-                                           th:href="'detail/'+ ${donation.id}">
+                                        <button style="width: 105px" class="btn btn-warning"
+                                                name="donationId" th:value="${donation.id}"
+                                           th:action="@{/admin/donation/{donationId}}">
                                             Chi tiết
-                                        </a>
+                                        </button>
 
                                         <button type="button" style="width: 105px" class="btn btn-danger mt-1"
                                                 data-bs-toggle="modal"
@@ -248,7 +251,9 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         Đợt quyên góp : <span th:text="${donation.name}"></span>
-                                                        <form method="post">
+                                                        <form method="post" th:action="@{/admin/deleteDonation}">
+                                                            <input type="hidden" class="form-control" id="id"
+                                                                   name="donationId" th:value="${donation.id}">
                                                             <div class="modal-footer" style="margin-top: 20px">
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">

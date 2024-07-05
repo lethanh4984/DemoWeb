@@ -5,6 +5,7 @@ import ASM1.demo.entity.Role;
 import ASM1.demo.repository.DonationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,9 +35,9 @@ public class DonationServiceImpl implements DonationService {
 
         Donation donation = null;
 
-        if(result.isPresent()){
-            donation=result.get();
-        }else {
+        if (result.isPresent()) {
+            donation = result.get();
+        } else {
             throw new RuntimeException("Did not find role id - " + id);
         }
 
@@ -45,6 +46,22 @@ public class DonationServiceImpl implements DonationService {
 
     @Override
     public List<Donation> donations() {
-        return donationRepository.findAll();
+
+        List<Donation>  donationList= donationRepository.findAll();
+
+        List<Donation> donationListByStatus= new ArrayList<>();
+
+        for (Donation donation : donationList) {
+            if (donation.getStatus()==0){
+                donationListByStatus.add(donation);
+            }
+        }
+
+        return donationListByStatus;
     }
+
+//    @Override
+//    public List<Donation> findAllByStatus(int status) {
+//
+//    }
 }
