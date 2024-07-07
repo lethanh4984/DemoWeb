@@ -94,7 +94,8 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" enctype="multipart/form-data" th:action="@{/admin/saveDonation}">
+                                        <form method="post" enctype="multipart/form-data"
+                                              th:action="@{/admin/saveDonation}">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label for="addname"
@@ -139,8 +140,8 @@
                                                 <div class="col-12">
                                                     <label for="ct_id" class="col-form-label">Nội dung:</label>
                                                     <label>
-                                                        <textarea name="description" class="form-control" cols="50"
-                                                                  rows="5"></textarea>
+                                                        <textarea name="description" class="form-control" cols="100"
+                                                                  rows="3"></textarea>
                                                     </label>
                                                 </div>
 
@@ -205,7 +206,9 @@
 
                                         <button style="width: 105px" class="btn btn-warning"
                                                 name="donationId" th:value="${donation.id}"
-                                           th:action="@{/admin/donation/{donationId}}">
+                                                th:action="@{/admin/donation/{donationId}}"
+                                                data-bs-toggle="modal"
+                                                th:data-bs-target="'#idModelDetail'+${donation.id}">
                                             Chi tiết
                                         </button>
 
@@ -269,6 +272,53 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="modal fade" th:id="'idModelDetail' + ${donation.id}" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Chi tiết đợt
+                                                            quyên góp : </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <h5>Tên đợt quyên góp:</h5>
+                                                                <p th:text="${donation.name}"></p>
+                                                                <h5>Mã đợt quyên góp:</h5>
+                                                                <p th:text="${donation.code}"></p>
+                                                                <h5>Ngày bắt đầu cuộc quyên góp:</h5>
+                                                                <p th:text="${donation.startDate}"></p>
+                                                                <h5>Ngày kết thúc cuộc quyên góp :</h5>
+                                                                <p th:text="${donation.endDate}"></p>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <h5>Số tiền quyên góp</h5>
+                                                                <p th:text="${donation.money}"></p>
+                                                                <h5>Tình trạng:</h5>
+                                                                <p th:text="${donation.status}"></p>
+                                                                <h5>Tên tổ chức:</h5>
+                                                                <p th:text="${donation.organizationName}"></p>
+                                                                <h5>Số điện thoại</h5>
+                                                                <p th:text="${donation.phoneNumber}"></p>
+                                                                <h5>Nội dung </h5>
+                                                                <p th:text="${donation.description}"></p>
+                                                            </div>
+
+                                                            <!--                                                            <div>-->
+                                                            <!--                                                                <h5> Danh sách nguời quyên góp</h5>-->
+                                                            <!--                                                                <p th:text="${userDonation.name}"></p>-->
+                                                            <!--                                                            </div>-->
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </td>
 
                                     <div class="modal fade" tabindex="-1" th:id="'exampleModal'+${donation.id}"
@@ -284,8 +334,10 @@
 
 
                                                 <div class="modal-body">
-                                                    <form enctype="multipart/form-data" method="post" th:action="@{/admin/updateDonation}">
-                                                        <input type="hidden" name="donationId" th:value="${donation.id}">
+                                                    <form enctype="multipart/form-data" method="post"
+                                                          th:action="@{/admin/updateDonation}">
+                                                        <input type="hidden" name="donationId"
+                                                               th:value="${donation.id}">
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <label for="addname"

@@ -10,29 +10,29 @@
         <meta name="author" content="Free-Template.co" />
         <link rel="shortcut icon" href="ftco-32x32.png">
         
-        <link rel="stylesheet" href="../../static/user/assets/css/custom-bs.css">
-        <link rel="stylesheet" href="../../static/user/assets/css/jquery.fancybox.min.css">
-        <link rel="stylesheet" href="../../static/user/assets/css/bootstrap-select.min.css">
-        <link rel="stylesheet" href="../../static/user/assets/fonts/icomoon/style.css">
-        <link rel="stylesheet" href="../../static/user/assets/fonts/line-icons/style.css">
-        <link rel="stylesheet" href="../../static/user/assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="../../static/user/assets/css/animate.min.css">
+        <link rel="stylesheet" href="/user/assets/css/custom-bs.css">
+        <link rel="stylesheet" href="/user/assets/css/jquery.fancybox.min.css">
+        <link rel="stylesheet" href="/user/assets/css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="/user/assets/fonts/icomoon/style.css">
+        <link rel="stylesheet" href="/user/assets/fonts/line-icons/style.css">
+        <link rel="stylesheet" href="/user/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/user/assets/css/animate.min.css">
       
         <!-- MAIN CSS -->
-        <link rel="stylesheet" href="../../static/user/assets/css/style.css">
+        <link rel="stylesheet" href="/user/assets/css/style.css">
         
-        <script src="../../static/user/assets/js/jquery.min.js"></script>
-        <script src="../../static/user/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../../static/user/assets/js/isotope.pkgd.min.js"></script>
-        <script src="../../static/user/assets/js/stickyfill.min.js"></script>
-        <script src="../../static/user/assets/js/jquery.fancybox.min.js"></script>
-        <script src="../../static/user/assets/js/jquery.easing.1.3.js"></script>
+        <script src="/user/assets/js/jquery.min.js"></script>
+        <script src="/user/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/user/assets/js/isotope.pkgd.min.js"></script>
+        <script src="/user/assets/js/stickyfill.min.js"></script>
+        <script src="/user/assets/js/jquery.fancybox.min.js"></script>
+        <script src="/user/assets/js/jquery.easing.1.3.js"></script>
     
-        <script src="../../static/user/assets/js/jquery.waypoints.min.js"></script>
-        <script src="../../static/user/assets/js/jquery.animateNumber.min.js"></script>
-        <script src="../../static/user/assets/js/owl.carousel.min.js"></script>
-        <script src="../../static/user/assets/js/bootstrap-select.min.js"></script>
-        <script src="../../static/user/assets/js/custom.js"></script>
+        <script src="/user/assets/js/jquery.waypoints.min.js"></script>
+        <script src="/user/assets/js/jquery.animateNumber.min.js"></script>
+        <script src="/user/assets/js/owl.carousel.min.js"></script>
+        <script src="/user/assets/js/bootstrap-select.min.js"></script>
+        <script src="/user/assets/js/custom.js"></script>
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
                 crossorigin="anonymous"></script>
@@ -52,14 +52,14 @@
 <div th:if="${msg}" class="toast" data-delay="1000" style="position:fixed; top: 100PX; left: 40PX;z-index: 2000;width: 300px">
 
     <script>
-        // swal({
-        //     title: 'Donate Successfully!',
-        //     /* text: 'Redirecting...', */
-        //     icon: 'success',
-        //     timer: 3000,
-        //     buttons: true,
-        //     type: 'success'
-        // })
+        swal({
+            title: 'Donate Successfully!',
+            /* text: 'Redirecting...', */
+            icon: 'success',
+            timer: 3000,
+            buttons: true,
+            type: 'success'
+        })
     </script>
 </div>
 
@@ -86,7 +86,7 @@
     </header>
 
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('/user/assets/images/hero_1.jpg');" id="home-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
@@ -107,23 +107,25 @@
 
             <ul class="job-listings mb-5">
                 <th>
-                    <li style="margin-bottom: 20px" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center ">
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+<!--                    <li style="margin-bottom: 20px" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center ">-->
+                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4"
+                             th:each="donation : ${donationList}">
                             <div class="job-listing-position custom-width  mb-3 mb-sm-0" style="padding: 10px;width: 250px">
-                                <h2>Quyên góp mùa lũ</h2>
+                                <h2 th:text="${donation.name}"></h2>
                                 <strong > Mới tạo </strong>
+
                             </div>
                             <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;">
                                 Ngày bắt đầu<br>
-                                <strong th:text="${category.startDate}"></strong><br>
+                                <strong th:text="${donation.startDate}"></strong><br>
                             </div>
                             <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;">
                                 Ngày kết thúc<br>
-                                <strong th:text="${category.endDate}"></strong><br>
+                                <strong th:text="${donation.endDate}"></strong><br>
                             </div>
                             <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25" style="padding: 10px;">
-                                <span class="icon-room"></span> <span th:text="${category.organizationName}"></span><br>
-                                <strong th:text="${category.phoneNumber}"></strong><br>
+                                <span class="icon-room"></span> <span th:text="${donation.organizationName}"></span><br>
+                                <strong th:text="${donation.phoneNumber}"></strong><br>
                             </div>
                             <div class="job-listing-meta custom-width w-20" >
                                 <p style="margin-top: 20px" class="btn btn-primary py-2" data-toggle="modal">Quyên góp</p>
@@ -131,7 +133,9 @@
                             </div>
                         </div>
 
-                    </li>
+
+
+<!--                    </li>-->
                     <!-- Modal -->
                     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
