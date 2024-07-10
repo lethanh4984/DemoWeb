@@ -11,6 +11,8 @@ public class Donation {
     @Column(name = "id")
     private int id;
 
+
+
     @Column(name = "code")
     private String code;
 
@@ -79,11 +81,11 @@ public class Donation {
         this.status = status;
     }
 
-    public DonationStatus getDonatonStatus() {
+    public DonationStatus getDonationStatus() {
         return donationStatus;
     }
 
-    public void setDonatonStatus(DonationStatus donationStatus) {
+    public void setDonationStatus(DonationStatus donationStatus) {
         this.donationStatus = donationStatus;
     }
 

@@ -3,9 +3,11 @@ package ASM1.demo.controller;
 import ASM1.demo.DTO.UserDTO;
 import ASM1.demo.DTO.UserMapper;
 import ASM1.demo.entity.Donation;
+import ASM1.demo.entity.DonationStatus;
 import ASM1.demo.entity.Role;
 import ASM1.demo.entity.User;
 import ASM1.demo.service.DonationService;
+import ASM1.demo.service.DonationStatusService;
 import ASM1.demo.service.RoleService;
 import ASM1.demo.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -25,11 +27,14 @@ public class DemoController {
 
     private DonationService donationService;
 
+    private DonationStatusService donationStatusService;
 
-    public DemoController(RoleService roleService, UserService userService, DonationService donationService) {
+
+    public DemoController(RoleService roleService, UserService userService, DonationService donationService , DonationStatusService donationStatusService) {
         this.roleService = roleService;
         this.userService = userService;
         this.donationService = donationService;
+        this.donationStatusService =donationStatusService;
     }
 
     @GetMapping("/home")
@@ -180,6 +185,9 @@ public class DemoController {
         newDonation.setOrganizationName(donation.getOrganizationName());
         newDonation.setDescription(donation.getDescription());
 
+        DonationStatus donationStatus= donationStatusService.findDonationStatusById(donation.getDonationStatus().getId());
+
+        newDonation.setDonationStatus(donationStatus);
 
 
         donationService.save(newDonation);
@@ -233,6 +241,55 @@ public class DemoController {
     @GetMapping("/donation/{donationId}")
     public void showDonation(@RequestParam("donation.id") int id){
         donationService.findById(id);
+    }
+
+    @PostMapping("/donation/status")
+    public String showStatus(@RequestParam("donationId") int id){
+        Donation donation = donationService.findById(id);
+
+        DonationStatus donationStatus = new DonationStatus(2,"mới tạo");
+
+
+        switch (donation.getDonationStatus().getName()) {
+            case "mới tạo" -> {
+                donation.setDonationStatus(null);
+                
+                donationStatus.setName("đang quyên góp");
+
+                String name = donationStatus.getName();
+
+                DonationStatus newDonationStatus= donationStatusService.findByName(name);
+
+                donation.setDonationStatus(newDonationStatus);
+            }
+            case "đang quyên góp" -> {
+                donation.setDonationStatus(null);
+
+                donationStatus.setName("kết thúc quyên góp");
+
+                String name = donationStatus.getName();
+
+                DonationStatus newDonationStatus= donationStatusService.findByName(name);
+
+                donation.setDonationStatus(newDonationStatus);
+
+            }
+            case "kết thúc quyên góp" -> {
+                donation.setDonationStatus(null);
+
+                donationStatus.setName("đóng quyên góp");
+
+                String name = donationStatus.getName();
+
+                DonationStatus newDonationStatus= donationStatusService.findByName(name);
+
+                donation.setDonationStatus(newDonationStatus);
+
+            }
+        }
+        donationService.save(donation);
+
+        return "redirect:/admin/donation";
     }
 
 }

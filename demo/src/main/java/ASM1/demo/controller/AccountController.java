@@ -1,10 +1,7 @@
 package ASM1.demo.controller;
 
 import ASM1.demo.entity.Donation;
-import ASM1.demo.entity.User;
-import ASM1.demo.entity.UserDonation;
 import ASM1.demo.service.DonationService;
-import ASM1.demo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/")
 public class AccountController {
 
     private DonationService donationService ;
@@ -22,7 +19,7 @@ public class AccountController {
         this.donationService = donationService;
     }
 
-    @GetMapping("/donations")
+    @GetMapping("/")
     public String donations(Model theModel){
 
         List<Donation> donationList = donationService.donations();
@@ -32,4 +29,11 @@ public class AccountController {
         return "public/home";
     }
 
+    @GetMapping("/donationInfo")
+    public String showDonationInfo(){
+
+
+
+        return "public/detail";
+    }
 }
