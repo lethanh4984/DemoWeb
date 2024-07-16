@@ -68,7 +68,6 @@
                         </a>
                     </div>
                 </div>
-
             </nav>
         </div>
     </div>
@@ -145,9 +144,10 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="ct_1" class="col-form-label" > Trạng thái:</label>
-                                                    <select class="form-control" id="ct_1" name="donationStatus.id" required>
-                                                        <option th:value=2 selected>Tạo mới </option>
+                                                    <label for="ct_1" class="col-form-label"> Trạng thái:</label>
+                                                    <select class="form-control" id="ct_1" name="donationStatus.id"
+                                                            required>
+                                                        <option th:value=2 selected>Tạo mới</option>
                                                     </select>
 
                                                 </div>
@@ -183,15 +183,12 @@
                                 <th style="width: 220px ">Hành động</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
 
-                            </tr>
-                            </tfoot>
                             <tbody>
 
                             <input type="hidden" th:value="${donationList.size()}" id="dodai"/>
                             <th:block th:each="donation : ${donationList}">
+
                                 <tr>
                                     <td th:text="${donation.code}"></td>
                                     <td th:text="${donation.name}"></td>
@@ -201,18 +198,17 @@
                                     <td th:text="${donation.phoneNumber}"></td>
                                     <td th:text="${donation.money}"></td>
                                     <td th:text="${donation.donationStatus.getName()}"></td>
-                                    <td style="">
+                                    <td>
 
                                         <button type="button" style="width: 105px" class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 th:data-bs-target="'#exampleModal'+${donation.id}">
-
                                             Cập nhật
                                         </button>
 
-                                        <button style="width: 105px" class="btn btn-warning"
+                                        <button type="button" style="width: 105px" class="btn btn-warning"
                                                 name="donationId" th:value="${donation.id}"
-                                                th:action="@{/admin/donation/{donationId}}"
+                                                th:action="@{/admin/donation/showDonation}"
                                                 data-bs-toggle="modal"
                                                 th:data-bs-target="'#idModelDetail'+${donation.id}">
                                             Chi tiết
@@ -225,37 +221,35 @@
                                         </button>
 
 
-                                            <form method="post" style="margin-left: 110px"
-                                                  th:action="@{/admin/donation/status}">
-                                                <input type="hidden" class="form-control" id="id" name="id">
-                                                <button type="submit" style="width: 105px" class="btn btn-success"
-                                                        th:if="${donation.donationStatus.name eq 'mới tạo'}"
-                                                        name="donationId" th:value="${donation.id}">
-                                                    Quyên góp
-                                                </button>
-                                            </form>
+                                        <form method="post" style="margin-left: 110px"
+                                              th:action="@{/admin/donation/status}">
+                                            <input type="hidden" class="form-control" id="id" name="id">
+                                            <button type="submit" style="width: 105px" class="btn btn-success"
+                                                    th:if="${donation.donationStatus.name eq 'mới tạo'}"
+                                                    name="donationId" th:value="${donation.id}">
+                                                Quyên góp
+                                            </button>
+                                        </form>
 
-                                            <form method="post" style="margin-left: 110px"
-                                                  th:action="@{/admin/donation/status}">
-                                                <input type="hidden" class="form-control" id="id" name="id">
-                                                <button type="submit" style="width: 105px" class="btn btn-success"
-                                                        th:if="${donation.donationStatus.name eq 'đang quyên góp'}"
-                                                        name="donationId" th:value="${donation.id}">
-                                                    Kết thúc quyên góp
-                                                </button>
-                                            </form>
+                                        <form method="post" style="margin-left: 110px"
+                                              th:action="@{/admin/donation/status}">
+                                            <input type="hidden" class="form-control" id="id" name="id">
+                                            <button type="submit" style="width: 105px" class="btn btn-success"
+                                                    th:if="${donation.donationStatus.name eq 'đang quyên góp'}"
+                                                    name="donationId" th:value="${donation.id}">
+                                                Kết thúc quyên góp
+                                            </button>
+                                        </form>
 
-                                            <form method="post" style="margin-left: 110px"
-                                                  th:action="@{/admin/donation/status}">
-                                                <input type="hidden" class="form-control" id="id" name="id">
-                                                <button type="submit" style="width: 105px" class="btn btn-success"
-                                                        th:if="${donation.donationStatus.name eq 'kết thúc quyên góp'}"
-                                                        name="donationId" th:value="${donation.id}">
-                                                    Đóng quyên góp
-                                                </button>
-                                            </form>
-
-
+                                        <form method="post" style="margin-left: 110px"
+                                              th:action="@{/admin/donation/status}">
+                                            <input type="hidden" class="form-control" id="id" name="id">
+                                            <button type="submit" style="width: 105px" class="btn btn-success"
+                                                    th:if="${donation.donationStatus.name eq 'kết thúc quyên góp'}"
+                                                    name="donationId" th:value="${donation.id}">
+                                                Đóng quyên góp
+                                            </button>
+                                        </form>
 
 
                                         <div class="modal fade" th:id="'idModelDel' + ${donation.id}" tabindex="-1"
@@ -323,18 +317,12 @@
                                                                 <h5>Nội dung </h5>
                                                                 <p th:text="${donation.description}"></p>
                                                             </div>
-
-<!--                                                            <div>-->
-<!--                                                                <h5> Danh sách nguời quyên góp</h5>-->
-<!--                                                                <p th:text="${userDonation.name}"></p>-->
-<!--                                                            </div>-->
-
+                                                            <a th:href="@{/admin/donation/{id}(id=${donation.id})}" > Xem thêm</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </td>
 
                                     <div class="modal fade" tabindex="-1" th:id="'exampleModal'+${donation.id}"
@@ -416,6 +404,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </tr>
+                            </th:block>
                             </tbody>
                         </table>
                     </div>

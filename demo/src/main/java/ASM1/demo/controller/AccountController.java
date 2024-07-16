@@ -32,8 +32,6 @@ public class AccountController {
     @GetMapping("/donationInfo")
     public String showDonationInfo(){
 
-
-
         return "public/detail";
     }
 }

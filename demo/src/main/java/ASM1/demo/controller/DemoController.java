@@ -2,14 +2,8 @@ package ASM1.demo.controller;
 
 import ASM1.demo.DTO.UserDTO;
 import ASM1.demo.DTO.UserMapper;
-import ASM1.demo.entity.Donation;
-import ASM1.demo.entity.DonationStatus;
-import ASM1.demo.entity.Role;
-import ASM1.demo.entity.User;
-import ASM1.demo.service.DonationService;
-import ASM1.demo.service.DonationStatusService;
-import ASM1.demo.service.RoleService;
-import ASM1.demo.service.UserService;
+import ASM1.demo.entity.*;
+import ASM1.demo.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +23,16 @@ public class DemoController {
 
     private DonationStatusService donationStatusService;
 
+    private UserDonationService userDonationService;
 
-    public DemoController(RoleService roleService, UserService userService, DonationService donationService , DonationStatusService donationStatusService) {
+
+    public DemoController(RoleService roleService, UserService userService, DonationService donationService,
+                          DonationStatusService donationStatusService,UserDonationService userDonationService) {
         this.roleService = roleService;
         this.userService = userService;
         this.donationService = donationService;
         this.donationStatusService =donationStatusService;
+        this.userDonationService = userDonationService;
     }
 
     @GetMapping("/home")
@@ -78,7 +76,6 @@ public class DemoController {
 
         userService.save(newUser);
 
-
         return "redirect:/admin/list";
     }
 
@@ -118,6 +115,7 @@ public class DemoController {
         user.setStatus(1);
 
         userService.save(user);
+
         return "redirect:/admin/list";
     }
 
@@ -138,14 +136,12 @@ public class DemoController {
     @PostMapping("/update")
     public String updateUser(@RequestParam("userId") int id,
                              @RequestParam("fullName") String fullName,
-                             @RequestParam("email") String email,
                              @RequestParam("phoneNumber") String phoneNumber,
                              @RequestParam("address") String address,
                              @RequestParam("role.id") int roleId
     ) {
         Role role = roleService.findRole(roleId);
         User tempUser = userService.findUser(id);
-
         tempUser.setFullName(fullName);
         tempUser.setPhoneNumber(phoneNumber);
         tempUser.setAddress(address);
@@ -239,8 +235,15 @@ public class DemoController {
     }
 
     @GetMapping("/donation/{donationId}")
-    public void showDonation(@RequestParam("donation.id") int id){
-        donationService.findById(id);
+    public String showDonation(Model model, @PathVariable("donationId") int donationId){
+        Donation donation = donationService.findById(donationId);
+//        List<Donation> donations = donationService.donations();
+
+        List<UserDonation> userDonationList= userDonationService.findByDonationId(donationId);
+        model.addAttribute("userDonations",userDonationList);
+        model.addAttribute("donation",donation);
+
+        return "admin/detail";
     }
 
     @PostMapping("/donation/status")

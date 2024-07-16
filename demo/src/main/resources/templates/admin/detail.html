@@ -26,7 +26,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <nav th:fragment="html_nav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/admin/">QUẢN TRỊ</a>
+    <a class="navbar-brand ps-3" href="/admin/home">QUẢN TRỊ</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
             class="fas fa-bars"></i></button>
@@ -57,11 +57,11 @@
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
           <div class="sb-sidenav-menu">
               <div class="nav">
-                  <a class="nav-link" href="account.html">
+                  <a class="nav-link" th:href="@{/admin/list}">
                       <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                       Quản lý người dùng
                   </a>
-                  <a class="nav-link" href="donation.html">
+                  <a class="nav-link" th:href="@{/admin/donation}">
                       <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                       Quản lý đợt quyên góp
                   </a>
@@ -79,33 +79,34 @@
         <div class="card mb-4">
 
           <div class="card-body">
+            <th:block th:each="donation : ${donation}">
             <!--Detail-->
             <div class="row">
               <div class="col-6">
                 <label for="addname"
                        class="col-form-label">Mã đợt quyên góp:</label>
-                <input type="text" class="form-control"
-                       id="addname" name="code" value="QP001" readonly="readonly">
+                <input readonly type="text" class="form-control"
+                       id="addname"  name="code" th:value="${donation.code}" >
               </div>
               <div class="col-6">
                 <label for="addcost"
                        class="col-form-label">Tên đợt quyên góp:</label>
-                <input type="text" class="form-control"
-                       id="addcost" name="name" value="Hỗ trợ vì người nghèo" readonly="readonly">
+                <input readonly type="text" class="form-control"
+                       id="addcost" th:value="${donation.name}" >
               </div>
             </div>
             <div class="row">
               <div class="col-6">
                 <label for="addname"
                        class="col-form-label">Ngày bắt đầu:</label>
-                <input type="date" class="form-control"
-                       id="addname" name="start" value="10/10/2023" readonly="readonly">
+                <input type="text" class="form-control"
+                       id="addname" name="start" th:value="${donation.startDate}" readonly>
               </div>
               <div class="col-6">
                 <label for="addcost"
                        class="col-form-label">Ngày kết thúc:</label>
-                <input type="date" class="form-control"
-                       id="addcost" name="end" value="12/10/2023"readonly="readonly">
+                <input type="text" class="form-control"
+                       id="addcost" name="end" th:value="${donation.endDate}" readonly>
               </div>
             </div>
             <div class="row">
@@ -113,19 +114,19 @@
                 <label for="addname"
                        class="col-form-label">Tổng tiền quyên góp:</label>
                 <input type="text" class="form-control"
-                       id="addname" name="start" value="20,000 VND" readonly="readonly">
+                       id="addname" name="start" th:value="${donation.money}" readonly>
               </div>
               <div class="col-6">
                 <label for="addcost"
                        class="col-form-label">Trạng thái:</label>
                 <input type="text" class="form-control"
-                       id="addcost" name="end" value="Mới tạo" readonly="readonly">
-                <input type="text" class="form-control"
-                       id="addcost" name="end" value="Đang quyên góp" readonly="readonly">
-                <input type="text" class="form-control"
-                       id="addcost" name="end" value="Kết thúc quyên góp" readonly="readonly">
-                <input type="text" class="form-control"
-                       id="addcost" name="end" value="Đóng quyên góp" readonly="readonly">
+                       id="addcost" name="end" th:value="${donation.donationStatus.name}" readonly>
+<!--                <input type="text" class="form-control"-->
+<!--                       id="addcost" name="end" value="Đang quyên góp" readonly="readonly">-->
+<!--                <input type="text" class="form-control"-->
+<!--                       id="addcost" name="end" value="Kết thúc quyên góp" readonly="readonly">-->
+<!--                <input type="text" class="form-control"-->
+<!--                       id="addcost" name="end" value="Đóng quyên góp" readonly="readonly">-->
               </div>
             </div>
             <div class="row">
@@ -133,19 +134,20 @@
                 <label for="addname"
                        class="col-form-label">Tổ chức:</label>
                 <input type="text" class="form-control"
-                       id="addname" name="tochuc" value="Vì trẻ em" readonly="readonly">
+                       id="addname" name="tochuc" th:value="${donation.organizationName}" readonly>
               </div>
               <div class="col-6">
                 <label for="addcost"
                        class="col-form-label">Số điện thoại:</label>
                 <input type="number" class="form-control"
-                       id="addcost" name="sdt" value="03800092934" readonly="readonly">
+                       id="addcost" name="sdt" th:value="${donation.phoneNumber}" readonly>
               </div>
               <div class="col-12">
                 <label for="ct_id" class="col-form-label">Nội dung:</label>
-                <textarea name="noidung" class="form-control" cols="50" readonly="readonly"></textarea>
+                <textarea name="noidung" class="form-control" cols="50" readonly th:text="${donation.description}"></textarea>
               </div>
             </div>
+            </th:block>
             <!--Detail-->
             <h3 class="mt-4">Danh sách những người quyên góp</h3>
             <table id="datatablesSimple">
@@ -165,14 +167,16 @@
               </tr>
               </tfoot>
               <tbody>
-              <input type="hidden" th:value="${userDonationList.size()}" id="dodai" />
-              <th>
+              <input type="hidden" th:value="${userDonations.size()}" id="dodai" />
+              <th:block th:each="userDonation: ${userDonations}">
                 <tr>
-                  <td>Minh Khương</td>
-                  <td>20000</td>
-                  <td>10/10/2023</td>
-                  <td>Quyên góp</td>
-                  <td>Chờ xác nhận</td>
+                  <td th:text="${userDonation.name}"></td>
+                  <td th:text="${userDonation.money}"></td>
+                  <td th:text="${userDonation.created}"></td>
+                  <td th:text="${userDonation.text}"></td>
+                  <td th:if="${userDonation.status == 0}">Chờ xác nhận</td>
+                  <td th:if="${userDonation.status == 1}">Xác nhận</td>
+                  <td th:if="${userDonation.status == 2}" th:text="Không xác nhận">Không xác nhận</td>
                   <td style="display: flex;justify-content: space-between">
 
                       <button type="submit" style="width: 105px" class="btn btn-success" >
@@ -180,11 +184,13 @@
                       </button>
                       <button type="submit" style="width: 150px" class="btn btn-danger" >
                         Hủy xác nhận
+                      </button>
                   </td>
                 </tr>
-              </th>
+              </th:block>
               </tbody>
             </table>
+            </th:block>
           </div>
         </div>
       </div>

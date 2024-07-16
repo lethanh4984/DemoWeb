@@ -112,7 +112,7 @@
                              th:each="donation : ${donationList}">
                             <div class="job-listing-position custom-width  mb-3 mb-sm-0" style="padding: 10px;width: 250px">
                                 <h2 th:text="${donation.name}"></h2>
-                                <strong > Mới tạo </strong>
+                                <strong th:text="${donation.donationStatus.name}"> </strong>
 
                             </div>
                             <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;">
@@ -128,7 +128,9 @@
                                 <strong th:text="${donation.phoneNumber}"></strong><br>
                             </div>
                             <div class="job-listing-meta custom-width w-20" >
-                                <p style="margin-top: 20px" class="btn btn-primary py-2" data-toggle="modal">Quyên góp</p>
+                                <p style="margin-top: 20px" class="btn btn-primary py-2" data-toggle="modal"
+                                th:if="${donation.donationStatus.name eq 'đang quyên góp'}"
+                                   th:action="@{/donationInfo}">Quyên góp</p>
                                 <p style="margin-top: 20px;background-color: white !important;" class="btn py-2"><span style="color: white">Quyên góp</span></p>
                             </div>
                         </div>
