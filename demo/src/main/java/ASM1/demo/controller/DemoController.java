@@ -254,10 +254,10 @@ public class DemoController {
 
 
         switch (donation.getDonationStatus().getName()) {
-            case "mới tạo" -> {
+            case "Mới tạo" -> {
                 donation.setDonationStatus(null);
                 
-                donationStatus.setName("đang quyên góp");
+                donationStatus.setName("Đang quyên góp");
 
                 String name = donationStatus.getName();
 
@@ -265,10 +265,10 @@ public class DemoController {
 
                 donation.setDonationStatus(newDonationStatus);
             }
-            case "đang quyên góp" -> {
+            case "Đang quyên góp" -> {
                 donation.setDonationStatus(null);
 
-                donationStatus.setName("kết thúc quyên góp");
+                donationStatus.setName("Kết thúc quyên góp");
 
                 String name = donationStatus.getName();
 
@@ -277,10 +277,10 @@ public class DemoController {
                 donation.setDonationStatus(newDonationStatus);
 
             }
-            case "kết thúc quyên góp" -> {
+            case "Kết thúc quyên góp" -> {
                 donation.setDonationStatus(null);
 
-                donationStatus.setName("đóng quyên góp");
+                donationStatus.setName("Đóng quyên góp");
 
                 String name = donationStatus.getName();
 

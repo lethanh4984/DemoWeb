@@ -35,4 +35,9 @@ public class UserDonationServiceImpl implements UserDonationService {
     public List<UserDonation> findAll() {
         return userDonationRepository.findAll();
     }
+
+    @Override
+    public void save(UserDonation userDonation) {
+        userDonationRepository.save(userDonation);
+    }
 }

@@ -225,7 +225,7 @@
                                               th:action="@{/admin/donation/status}">
                                             <input type="hidden" class="form-control" id="id" name="id">
                                             <button type="submit" style="width: 105px" class="btn btn-success"
-                                                    th:if="${donation.donationStatus.name eq 'mới tạo'}"
+                                                    th:if="${donation.donationStatus.name eq 'Mới tạo'}"
                                                     name="donationId" th:value="${donation.id}">
                                                 Quyên góp
                                             </button>
@@ -235,7 +235,7 @@
                                               th:action="@{/admin/donation/status}">
                                             <input type="hidden" class="form-control" id="id" name="id">
                                             <button type="submit" style="width: 105px" class="btn btn-success"
-                                                    th:if="${donation.donationStatus.name eq 'đang quyên góp'}"
+                                                    th:if="${donation.donationStatus.name eq 'Đang quyên góp'}"
                                                     name="donationId" th:value="${donation.id}">
                                                 Kết thúc quyên góp
                                             </button>
@@ -245,7 +245,7 @@
                                               th:action="@{/admin/donation/status}">
                                             <input type="hidden" class="form-control" id="id" name="id">
                                             <button type="submit" style="width: 105px" class="btn btn-success"
-                                                    th:if="${donation.donationStatus.name eq 'kết thúc quyên góp'}"
+                                                    th:if="${donation.donationStatus.name eq 'Kết thúc quyên góp'}"
                                                     name="donationId" th:value="${donation.id}">
                                                 Đóng quyên góp
                                             </button>

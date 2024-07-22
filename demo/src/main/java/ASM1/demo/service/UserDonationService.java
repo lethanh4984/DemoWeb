@@ -10,4 +10,6 @@ public interface UserDonationService {
     List<UserDonation> findByDonationId(int donationId);
 
     List<UserDonation> findAll();
+
+    void save(UserDonation userDonation);
 }
