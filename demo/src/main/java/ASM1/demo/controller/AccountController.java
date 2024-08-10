@@ -33,8 +33,24 @@ public class AccountController {
     }
 
 
-    @GetMapping("/showDonationInfo")
-    public String showDonation(){
+    @GetMapping("/showDonationInfo/{donationId}")
+    public String showDonation(Model model, @PathVariable("donationId") int donationId){
+
+        Donation donation = donationService.findById(donationId);
+        List<UserDonation> userDonationList = userDonationService.findByDonationId(donationId);
+
+
+            int money =0;
+            for(UserDonation userDonation: userDonationList){
+                money += userDonation.getMoney();
+            }
+            donation.setMoney(money);
+
+
+        model.addAttribute("donation",donation);
+        model.addAttribute("userDonationList",userDonationList);
+
+        donationService.save(donation);
 
         return "public/detail";
     }
@@ -60,6 +76,6 @@ public class AccountController {
         userDonationService.save(userDonation);
 
 
-        return "public/home";
+        return "redirect:/";
     }
 }

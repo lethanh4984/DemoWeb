@@ -107,123 +107,128 @@
             </div>
 
             <ul class="job-listings mb-5">
-                <th>
-                    <!--                    <li style="margin-bottom: 20px" class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center ">-->
-                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4"
-                         th:each="donation : ${donationList}">
-                        <div class="job-listing-position custom-width  mb-3 mb-sm-0" style="padding: 10px;width: 250px">
-                            <h2 th:text="${donation.name}"></h2>
-                            <strong th:text="${donation.donationStatus.name}"> </strong>
-                        </div>
-                        <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;">
-                            Ngày bắt đầu<br>
-                            <strong th:text="${donation.startDate}"></strong><br>
-                        </div>
-                        <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;">
-                            Ngày kết thúc<br>
-                            <strong th:text="${donation.endDate}"></strong><br>
-                        </div>
-                        <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25" style="padding: 10px;">
-                            Tên tổ chức
-                            <br>
-                            <span class="icon-room"></span> <span th:text="${donation.organizationName}"></span><br>
-                            <strong th:text="${donation.phoneNumber}"></strong><br>
-                        </div>
-                        <div class="job-listing-meta custom-width w-20">
-                            <button style="margin-top: 20px" class="btn btn-primary py-2" data-bs-toggle="modal"
-                                    th:if="${donation.donationStatus.name eq 'Đang quyên góp'}"
-                                    type="button" th:data-bs-target="'#userDonationInfo'">Quyên góp
-                            </button>
-                            <p style="margin-top: 20px;background-color: white !important;" class="btn py-2"><span
-                                    style="color: white">Quyên góp</span></p>
-                        </div>
+                <th:block th:each="donation : ${donationList}">
+                    <li class="job-listings d-block d-sm-flex pb-3 pb-sm-0 align-items-center ">
+                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                            <div class="job-listing-position custom-width  mb-3 mb-sm-0"
+                                 style="padding: 10px;width: 250px">
+                                <strong><a th:text="${donation.name}"
+                                           th:href="@{/showDonationInfo/{donationId}(donationId=${donation.id})}"></a></strong>
+                                <br>
+                                <strong th:text="${donation.donationStatus.name}"> </strong>
+                            </div>
+                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;margin-top: 17px">
+                                Ngày bắt đầu<br>
+                                <strong th:text="${donation.startDate}"></strong><br>
+                            </div>
+                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;margin-top: 17px">
+                                Ngày kết thúc<br>
+                                <strong th:text="${donation.endDate}"></strong><br>
+                            </div>
+                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-10" style="padding: 10px;margin-top: 17px">
+                                <span class="icon-room"></span> <span th:text="${donation.organizationName}"></span><br>
+                                <strong th:text="${donation.phoneNumber}"></strong><br>
+                            </div>
+                            <div class="job-listing-meta custom-width w-20" id="donations">
+                                <button style="margin-top: 30px"
+                                        class="btn btn-primary py-2 donation"
+                                        data-bs-toggle="modal" type="button"
+                                        th:if="${donation.donationStatus.name eq 'Đang quyên góp'}"
+                                        th:data-bs-target="'#userDonationInfo'+${donation.id}" th:name="donationId"
+                                        th:value="${donation.id}">
+                                    Quyên góp nhanh
+                                    <input type="hidden" th:value="${donation.id}">
+                                </button>
+                            </div>
 
 
-                        <!--                    </li>-->
-                        <!-- Modal -->
-                        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true" th:id="'userDonationInfo'">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel"><span>Quyên góp:</span></h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                    </li>
+                    <!-- Modal -->
+                    <div class="modal fade" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true" th:id="'userDonationInfo' +${donation.id}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"> Quyên góp: <span
+                                            th:text="${donation.name}"></span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
 
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <form method="post" th:action="@{/userDonation}">
-                                            <input type="hidden" name="donationId"
-                                                   th:value="${donation.id}">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label for="addname"
-                                                           class="col-form-label">Họ tên:</label>
-                                                    <input type="text" class="form-control"
-                                                           id="addname" name="name" placeholder="" required>
-                                                    <label for="addname"
-                                                           class="col-form-label">Số tiền quyên góp:</label>
-                                                    <input type="number" class="form-control" placeholder=""
-                                                           id="addname" name="money" required>
-                                                    <input type="hidden" class="form-control" placeholder=""
-                                                           id="addname" name="idUser">
-                                                    <input type="hidden" class="form-control" placeholder=""
-                                                           id="addname" name="idDonation" required>
-
-                                                    <label for="addname"
-                                                           class="col-form-label">Lời nhắn:</label>
-                                                    <textarea rows="10" cols="3" class="form-control"
-                                                              name="messageOfUser">
+                                <div class="modal-body">
+                                    <form method="post" th:action="@{/userDonation}">
+                                        <input type="hidden" th:name="donationId"
+                                               th:value="${donation.id}">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label for="addname"
+                                                       class="col-form-label">Họ tên:</label>
+                                                <input type="text" class="form-control"
+                                                       id="addname" name="name" placeholder="" required>
+                                                <label for="addname"
+                                                       class="col-form-label">Số tiền quyên góp:</label>
+                                                <input type="number" class="form-control" placeholder=""
+                                                       id="addname" name="money" required>
+                                                <input type="hidden" class="form-control" placeholder=""
+                                                       id="addname" name="idUser">
+                                                <input type="hidden" class="form-control" placeholder=""
+                                                       id="addname" name="idDonation" required>
+                                                <label for="addname"
+                                                       class="col-form-label">Lời nhắn:</label>
+                                                <textarea rows="10" cols="3" class="form-control"
+                                                          name="messageOfUser">
 
                                                 </textarea>
-                                                </div>
-
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Đóng
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Quyên góp
-                                                </button>
-                                            </div>
-                                        </form>
 
-                                    </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">
+                                                Đóng
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-submit">Quyên
+                                                góp
+                                            </button>
+                                        </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                </th>
-                <script>
-                    function detail(id) {
-                        window.location = '/donation/detail/' + id;
-                    }
-
-
-                </script>
+                </th:block>
             </ul>
+        </div>
 
-            <div class="row pagination-wrap">
-                <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+        <div class="row pagination-wrap">
+            <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
 
-                </div>
-                <div class="col-md-6 text-center text-md-right">
-                    <div class="custom-pagination ml-auto">
-                        <a class="prev">Prev</a>
-                        <div class="d-inline-block">
-                        </div>
-
-                        <a class="next">Next</a>
+            </div>
+            <div class="col-md-6 text-center text-md-left">
+                <div class="custom-pagination ml-auto">
+                    <a class="prev">Prev</a>
+                    <div class="d-inline-block">
                     </div>
+
+                    <a class="next">Next</a>
                 </div>
             </div>
-
         </div>
-    </section>
+
+</div>
+</section>
 
 </div>
 
+<script>
+    function detail(id) {
+        window.location = '/donation/detail/' + id;
+    }
+</script>
 
 </body>
 </html>

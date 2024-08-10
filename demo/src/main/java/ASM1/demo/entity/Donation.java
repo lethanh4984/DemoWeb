@@ -11,8 +11,6 @@ public class Donation {
     @Column(name = "id")
     private int id;
 
-
-
     @Column(name = "code")
     private String code;
 
