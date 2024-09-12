@@ -26,7 +26,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <nav th:fragment="html_nav" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="/admin/home">QUẢN TRỊ</a>
+        <a class="navbar-brand ps-3" th:href="@{/api/admins/home}">QUẢN TRỊ</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -58,11 +58,11 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <a class="nav-link" th:href="@{/admin/list}">
+                        <a class="nav-link" th:href="@{/api/admins/list}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Quản lý người dùng
                         </a>
-                        <a class="nav-link" th:href="@{/admin/donation}">
+                        <a class="nav-link" th:href="@{/api/admins/donation}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Quản lý đợt quyên góp
                         </a>
@@ -149,7 +149,6 @@
                                                             required>
                                                         <option th:value=2 selected>Tạo mới</option>
                                                     </select>
-
                                                 </div>
 
                                             </div>
@@ -179,6 +178,7 @@
                                 <th>Tổ chức</th>
                                 <th>Số điện thoại</th>
                                 <th>Tổng tiền</th>
+                                <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
                                 <th style="width: 220px ">Hành động</th>
                             </tr>
@@ -197,6 +197,7 @@
                                     <td th:text="${donation.organizationName}"></td>
                                     <td th:text="${donation.phoneNumber}"></td>
                                     <td th:text="${donation.money}"></td>
+                                    <td><img width="100" height="100" th:src="@{'/i/' + ${donation.image}}" alt="This is image"></td>
                                     <td th:text="${donation.donationStatus.getName()}"></td>
                                     <td>
 
@@ -208,7 +209,7 @@
 
                                         <button type="button" style="width: 105px" class="btn btn-warning"
                                                 name="donationId" th:value="${donation.id}"
-                                                th:action="@{/admin/donation/showDonation}"
+                                                th:action="@{/api/admins/donation/showDonation}"
                                                 data-bs-toggle="modal"
                                                 th:data-bs-target="'#idModelDetail'+${donation.id}">
                                             Chi tiết
@@ -222,7 +223,7 @@
 
 
                                         <form method="post" style="margin-left: 110px"
-                                              th:action="@{/admin/donation/status}">
+                                              th:action="@{/api/admins/donation/status}">
                                             <input type="hidden" class="form-control" id="id" name="id">
                                             <button type="submit" style="width: 105px" class="btn btn-success"
                                                     th:if="${donation.donationStatus.name eq 'Mới tạo'}"
@@ -232,7 +233,7 @@
                                         </form>
 
                                         <form method="post" style="margin-left: 110px"
-                                              th:action="@{/admin/donation/status}">
+                                              th:action="@{/api/admins/donation/status}">
                                             <input type="hidden" class="form-control" id="id" name="id">
                                             <button type="submit" style="width: 105px" class="btn btn-success"
                                                     th:if="${donation.donationStatus.name eq 'Đang quyên góp'}"
@@ -242,7 +243,7 @@
                                         </form>
 
                                         <form method="post" style="margin-left: 110px"
-                                              th:action="@{/admin/donation/status}">
+                                              th:action="@{/api/admins/donation/status}">
                                             <input type="hidden" class="form-control" id="id" name="id">
                                             <button type="submit" style="width: 105px" class="btn btn-success"
                                                     th:if="${donation.donationStatus.name eq 'Kết thúc quyên góp'}"
@@ -264,7 +265,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         Đợt quyên góp : <span th:text="${donation.name}"></span>
-                                                        <form method="post" th:action="@{/admin/deleteDonation}">
+                                                        <form method="post" th:action="@{/api/admins/deleteDonation}">
                                                             <input type="hidden" class="form-control" id="id"
                                                                    name="donationId" th:value="${donation.id}">
                                                             <div class="modal-footer" style="margin-top: 20px">
@@ -317,7 +318,8 @@
                                                                 <h5>Nội dung </h5>
                                                                 <p th:text="${donation.description}"></p>
                                                             </div>
-                                                            <a th:href="@{/admin/donation/{id}(id=${donation.id})}" > Xem thêm</a>
+                                                            <a th:href="@{/api/admins/donation/{id}(id=${donation.id})}"> Xem
+                                                                thêm</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -339,15 +341,14 @@
 
                                                 <div class="modal-body">
                                                     <form enctype="multipart/form-data" method="post"
-                                                          th:action="@{/admin/updateDonation}">
+                                                          th:action="@{/api/admins/updateDonation}" th:object="${donation}">
                                                         <input type="hidden" name="donationId"
                                                                th:value="${donation.id}">
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <label for="addname"
                                                                        class="col-form-label">Mã đợt quyên góp:</label>
-                                                                <input type="text" class="form-control"
-                                                                       id="addname" name="code" required>
+                                                                <input type="text" class="form-control" id="addname" name="code" required>
                                                             </div>
                                                             <div class="col-6">
                                                                 <label for="addcost"
@@ -383,13 +384,19 @@
                                                                 <input type="number" class="form-control"
                                                                        id="addcost" name="phoneNumber" required>
                                                             </div>
-                                                            <div class="col-12">
+                                                            <div class="col-6">
                                                                 <label for="ct_id" class="col-form-label">Nội
                                                                     dung:</label>
                                                                 <label>
                                                                     <textarea name="description" class="form-control"
                                                                               cols="50" rows="5"></textarea>
                                                                 </label>
+                                                            </div>
+
+                                                            <div class="col-6">
+                                                                <label for="img">Hình ảnh</label>
+                                                                <input type="file" id="img" name="image" accept="image/*">
+
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">

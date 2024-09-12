@@ -212,7 +212,7 @@ jQuery(function($) {
 	    nav:true,
 	    autoplay: true,
 	    items:1,
-	    nav: false,
+	    // nav: false,
 	    smartSpeed: 1000
 		});
 

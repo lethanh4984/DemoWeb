@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/api/users")
 public class AccountController {
 
     private DonationService donationService ;
@@ -77,5 +77,11 @@ public class AccountController {
 
 
         return "redirect:/";
+    }
+
+    @PostMapping("/login")
+    public String login(){
+
+        return "admin/login";
     }
 }

@@ -79,9 +79,9 @@
         <div class="card mb-4">
 
           <div class="card-body">
-            <th:block th:each="donation : ${donation}">
+            <th:block th:each="donation : ${donation}" >
             <!--Detail-->
-            <div class="row">
+            <div class="row" th:object="${donation}">
               <div class="col-6">
                 <label for="addname"
                        class="col-form-label">Mã đợt quyên góp:</label>
@@ -121,12 +121,6 @@
                        class="col-form-label">Trạng thái:</label>
                 <input type="text" class="form-control"
                        id="addcost" name="end" th:value="${donation.donationStatus.name}" readonly>
-<!--                <input type="text" class="form-control"-->
-<!--                       id="addcost" name="end" value="Đang quyên góp" readonly="readonly">-->
-<!--                <input type="text" class="form-control"-->
-<!--                       id="addcost" name="end" value="Kết thúc quyên góp" readonly="readonly">-->
-<!--                <input type="text" class="form-control"-->
-<!--                       id="addcost" name="end" value="Đóng quyên góp" readonly="readonly">-->
               </div>
             </div>
             <div class="row">
@@ -146,6 +140,7 @@
                 <label for="ct_id" class="col-form-label">Nội dung:</label>
                 <textarea name="noidung" class="form-control" cols="50" readonly th:text="${donation.description}"></textarea>
               </div>
+
             </div>
             </th:block>
             <!--Detail-->

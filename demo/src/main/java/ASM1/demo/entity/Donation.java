@@ -41,10 +41,29 @@ public class Donation {
     @Column(name = "status")
     private int status;
 
-    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH})
+    @Column(name = "image")
+    private String image;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
     @JoinColumn(name = "donation_status_id")
     private DonationStatus donationStatus;
 
+
+    public Donation(String code, String created, String description, DonationStatus donationStatus, String endDate, int id, String image, int money, String name, String organizationName, String phoneNumber, String startDate, int status) {
+        this.code = code;
+        this.created = created;
+        this.description = description;
+        this.donationStatus = donationStatus;
+        this.endDate = endDate;
+        this.id = id;
+        this.image = image;
+        this.money = money;
+        this.name = name;
+        this.organizationName = organizationName;
+        this.phoneNumber = phoneNumber;
+        this.startDate = startDate;
+        this.status = status;
+    }
 
     @Override
     public String toString() {
@@ -60,23 +79,9 @@ public class Donation {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", status=" + status +
+                ", image='" + image + '\'' +
                 ", donationStatus=" + donationStatus +
                 '}';
-    }
-
-    public Donation(String code, String created, String description, DonationStatus donationStatus, String endDate, int id, int money, String name, String organizationName, String phoneNumber, String startDate, int status) {
-        this.code = code;
-        this.created = created;
-        this.description = description;
-        this.donationStatus = donationStatus;
-        this.endDate = endDate;
-        this.id = id;
-        this.money = money;
-        this.name = name;
-        this.organizationName = organizationName;
-        this.phoneNumber = phoneNumber;
-        this.startDate = startDate;
-        this.status = status;
     }
 
     public DonationStatus getDonationStatus() {
@@ -175,6 +180,13 @@ public class Donation {
         this.status = status;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Donation() {
     }

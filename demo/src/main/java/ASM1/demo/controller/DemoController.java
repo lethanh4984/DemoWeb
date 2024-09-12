@@ -1,18 +1,28 @@
 package ASM1.demo.controller;
 
+import ASM1.demo.DTO.ImageFile;
 import ASM1.demo.DTO.UserDTO;
 import ASM1.demo.DTO.UserMapper;
 import ASM1.demo.entity.*;
 import ASM1.demo.service.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/api/admins")
 public class DemoController {
 
     private UserService userService;
@@ -24,6 +34,12 @@ public class DemoController {
     private DonationStatusService donationStatusService;
 
     private UserDonationService userDonationService;
+
+//    @Value("E:\\tai lieu java\\Funix\\Tai lieu cua Funix\\Spring and framework\\ASM\\ASM1\\uploads")
+//    private String fileSavedPosition;
+
+    @Value("${upload_file}")
+    public String UPLOAD_DIRECTORY;
 
 
     public DemoController(RoleService roleService, UserService userService, DonationService donationService,
@@ -139,7 +155,7 @@ public class DemoController {
                              @RequestParam("phoneNumber") String phoneNumber,
                              @RequestParam("address") String address,
                              @RequestParam("role.id") int roleId
-    ) {
+                             ) {
         Role role = roleService.findRole(roleId);
         User tempUser = userService.findUser(id);
         tempUser.setFullName(fullName);
@@ -148,7 +164,11 @@ public class DemoController {
 
         tempUser.setRole(role);
 
+
         userService.save(tempUser);
+
+
+
 
         return "redirect:/admin/list";
     }
@@ -188,7 +208,7 @@ public class DemoController {
 
         donationService.save(newDonation);
 
-        return  "redirect:/admin/donation";
+        return  "redirect:/api/admins/donation";
     }
 
     //update donation
@@ -200,7 +220,9 @@ public class DemoController {
                                  @RequestParam("organizationName") String organnizationName,
                                  @RequestParam("phoneNumber") String phoneNumber,
                                  @RequestParam("description") String description,
-                                 @RequestParam("donationId")int id){
+                                 @RequestParam("donationId")int id,
+                                 @RequestParam("image") MultipartFile imageFile,
+                                 Model model) throws IOException {
 
         Donation tempDonation = donationService.findById(id);
 
@@ -213,9 +235,18 @@ public class DemoController {
         tempDonation.setOrganizationName(organnizationName);
 
 
+        //upload file
+        String fileName = imageFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(imageFile.getBytes(),new File(UPLOAD_DIRECTORY + fileName));
+        } catch (IOException e) {
+            throw new RuntimeException("No image");
+        }
+        tempDonation.setImage(fileName);
+
         donationService.save(tempDonation);
 
-        return  "redirect:/admin/donation";
+        return  "redirect:/api/admins/donation";
     }
 
     @PostMapping("/deleteDonation")
@@ -231,7 +262,7 @@ public class DemoController {
 
         donationService.save(donation);
 
-        return  "redirect:/admin/donation";
+        return  "redirect:/api/admins/donation";
     }
 
     @GetMapping("/donation/{donationId}")
@@ -292,7 +323,7 @@ public class DemoController {
         }
         donationService.save(donation);
 
-        return "redirect:/admin/donation";
+        return "redirect:/api/admins/donation";
     }
 
 }

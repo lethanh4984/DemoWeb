@@ -1576,7 +1576,8 @@ h1, h2, h3, h4 {
     list-style: none; }
     .comment-list li .vcard {
       width: 80px;
-      float: left; }
+      float: left;
+    }
       .comment-list li .vcard img {
         width: 50px;
         border-radius: 50%; }
@@ -1600,6 +1601,19 @@ h1, h2, h3, h4 {
           color: #000;
           background: #e3e3e3; }
 
+
+.bio div{
+  display: inline-block;
+
+}
+
+.bio div:last-child{
+  margin-right: 40px;
+}
+.bio{
+  display: flex;
+  justify-content: space-between;
+}
 .search-form {
   background: #f7f7f7; }
   .search-form .form-group {
