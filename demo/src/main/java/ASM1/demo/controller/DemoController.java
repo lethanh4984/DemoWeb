@@ -35,9 +35,6 @@ public class DemoController {
 
     private UserDonationService userDonationService;
 
-//    @Value("E:\\tai lieu java\\Funix\\Tai lieu cua Funix\\Spring and framework\\ASM\\ASM1\\uploads")
-//    private String fileSavedPosition;
-
     @Value("${upload_file}")
     public String UPLOAD_DIRECTORY;
 
