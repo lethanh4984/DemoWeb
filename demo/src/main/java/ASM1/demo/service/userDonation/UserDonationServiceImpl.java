@@ -1,4 +1,4 @@
-package ASM1.demo.service;
+package ASM1.demo.service.userDonation;
 
 import ASM1.demo.entity.UserDonation;
 import ASM1.demo.repository.UserDonationRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class UserDonationServiceImpl implements UserDonationService {
 
-    private UserDonationRepository userDonationRepository;
+    private final UserDonationRepository userDonationRepository;
 
     public UserDonationServiceImpl(UserDonationRepository userDonationRepository) {
         this.userDonationRepository = userDonationRepository;

@@ -1,10 +1,13 @@
 package ASM1.demo.controller;
 
-import ASM1.demo.DTO.ImageFile;
 import ASM1.demo.DTO.UserDTO;
 import ASM1.demo.DTO.UserMapper;
 import ASM1.demo.entity.*;
-import ASM1.demo.service.*;
+import ASM1.demo.service.donationStatus.DonationStatusService;
+import ASM1.demo.service.donation.DonationService;
+import ASM1.demo.service.role.RoleService;
+import ASM1.demo.service.user.IUserService;
+import ASM1.demo.service.userDonation.UserDonationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,12 +15,9 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/api/admins")
 public class DemoController {
 
-    private UserService userService;
+    private IUserService userService;
 
     private RoleService roleService;
 
@@ -39,8 +39,8 @@ public class DemoController {
     public String UPLOAD_DIRECTORY;
 
 
-    public DemoController(RoleService roleService, UserService userService, DonationService donationService,
-                          DonationStatusService donationStatusService,UserDonationService userDonationService) {
+    public DemoController(RoleService roleService, IUserService userService, DonationService donationService,
+                          DonationStatusService donationStatusService, UserDonationService userDonationService) {
         this.roleService = roleService;
         this.userService = userService;
         this.donationService = donationService;
@@ -57,10 +57,10 @@ public class DemoController {
     public String listEmployees(Model theModel) {
 
         // get the User from db
-        List<User> theUser = userService.listUser();
+        List<AppUser> theAppUser = userService.listUser();
 
         // add to the spring model
-        theModel.addAttribute("users", theUser);
+        theModel.addAttribute("users", theAppUser);
 
         return "admin/account";
 
@@ -68,28 +68,28 @@ public class DemoController {
 
 
     @PostMapping("/save")
-    public String saveNewUser(@ModelAttribute User user) {
+    public String saveNewUser(@ModelAttribute AppUser appUser) {
 
 
         UserMapper userMapper = new UserMapper();
 
-        UserDTO userDTO = userMapper.toUserDTO(user);
+        UserDTO userDTO = userMapper.toUserDTO(appUser);
 
-        Role role = roleService.findRole(userDTO.getRoleId());
+        AppRole appRole = roleService.findRole(userDTO.getRoleId());
 
-        User newUser = new User();
+        AppUser newAppUser = new AppUser();
 
-        newUser.setRole(role);
-        newUser.setUserName(userDTO.getUserName());
-        newUser.setAddress(userDTO.getAddress());
-        newUser.setEmail(userDTO.getEmail());
-        newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(userDTO.getPassword());
-        newUser.setPhoneNumber(userDTO.getPhoneNumber());
+        newAppUser.setAppRole(Collections.singleton(appRole));
+        newAppUser.setUserName(userDTO.getUserName());
+        newAppUser.setAddress(userDTO.getAddress());
+        newAppUser.setEmail(userDTO.getEmail());
+        newAppUser.setFullName(userDTO.getFullName());
+        newAppUser.setPassword(userDTO.getPassword());
+        newAppUser.setPhoneNumber(userDTO.getPhoneNumber());
 
-        userService.save(newUser);
+        userService.save(newAppUser);
 
-        return "redirect:/admin/list";
+        return "redirect:/api/admins/list";
     }
 
 
@@ -97,13 +97,13 @@ public class DemoController {
 
     @GetMapping("/search")
     public String searchInfo(Model theModel, String searchInfo) {
-        List<User> userSearchByEmail = userService.findByEmailContaining(searchInfo);
+        List<AppUser> appUserSearchByEmail = userService.findByEmailContaining(searchInfo);
 
-        List<User> userSearchByPhone = userService.findByPhoneNumberContaining(searchInfo);
+        List<AppUser> appUserSearchByPhone = userService.findByPhoneNumberContaining(searchInfo);
 
-        theModel.addAttribute("users", userSearchByEmail);
+        theModel.addAttribute("users", appUserSearchByEmail);
 
-        theModel.addAttribute("users", userSearchByPhone);
+        theModel.addAttribute("users", appUserSearchByPhone);
 
         return "/admin/usersSearch";
     }
@@ -111,39 +111,39 @@ public class DemoController {
     @PostMapping("/lock")
     public String lockFunction(@RequestParam("userId") int id) {
 
-        User user = userService.findUser(id);
+        AppUser appUser = userService.findUser(id);
 
-        user.setStatus(0);
+        appUser.setStatus(0);
 
-        userService.save(user);
+        userService.save(appUser);
 
-        return "redirect:/admin/list";
+        return "redirect:/api/admins/list";
     }
 
 
     @PostMapping("/unlock")
     public String unlockFunction(@RequestParam("userId") int id) {
-        User user = userService.findUser(id);
+        AppUser appUser = userService.findUser(id);
 
-        user.setStatus(1);
+        appUser.setStatus(1);
 
-        userService.save(user);
+        userService.save(appUser);
 
-        return "redirect:/admin/list";
+        return "redirect:/api/admins/list";
     }
 
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("userId") int theId) {
 
-        User user = userService.findUser(theId);
+        AppUser appUser = userService.findUser(theId);
 
         //set foreign key = null to delete
-        user.setRole(null);
+        appUser.setAppRole(null);
 
         userService.deleteById(theId);
 
-        return "redirect:/admin/list";
+        return "redirect:/api/admins/list";
     }
 
     @PostMapping("/update")
@@ -153,21 +153,21 @@ public class DemoController {
                              @RequestParam("address") String address,
                              @RequestParam("role.id") int roleId
                              ) {
-        Role role = roleService.findRole(roleId);
-        User tempUser = userService.findUser(id);
-        tempUser.setFullName(fullName);
-        tempUser.setPhoneNumber(phoneNumber);
-        tempUser.setAddress(address);
+        AppRole appRole = roleService.findRole(roleId);
+        AppUser tempAppUser = userService.findUser(id);
+        tempAppUser.setFullName(fullName);
+        tempAppUser.setPhoneNumber(phoneNumber);
+        tempAppUser.setAddress(address);
 
-        tempUser.setRole(role);
-
-
-        userService.save(tempUser);
+        tempAppUser.setAppRole(Collections.singleton(appRole));
 
 
+        userService.save(tempAppUser);
 
 
-        return "redirect:/admin/list";
+
+
+        return "redirect:/api/admins/list";
     }
 
 
@@ -219,6 +219,7 @@ public class DemoController {
                                  @RequestParam("description") String description,
                                  @RequestParam("donationId")int id,
                                  @RequestParam("image") MultipartFile imageFile,
+//                                 @RequestParam("image") MultipartFile[] imageFiles,//List images
                                  Model model) throws IOException {
 
         Donation tempDonation = donationService.findById(id);
@@ -230,6 +231,18 @@ public class DemoController {
         tempDonation.setStartDate(startDate);
         tempDonation.setEndDate(endDate);
         tempDonation.setOrganizationName(organnizationName);
+
+        //duyet qua List Images
+//        for(MultipartFile image:imageFiles){
+//        String fileName = imageFile.getOriginalFilename();
+//        try {
+//            FileCopyUtils.copy(imageFile.getBytes(),new File(UPLOAD_DIRECTORY + fileName));
+//        } catch (IOException e) {
+//            throw new RuntimeException("No image");
+//        }
+//        tempDonation.setImage(fileName);
+//
+//        }
 
 
         //upload file
@@ -322,5 +335,6 @@ public class DemoController {
 
         return "redirect:/api/admins/donation";
     }
+
 
 }

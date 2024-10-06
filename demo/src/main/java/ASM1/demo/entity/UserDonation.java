@@ -31,7 +31,7 @@ public class UserDonation {
     @OneToOne(cascade= {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "user_id")
-    private User user;
+    private AppUser appUser;
 
     @OneToOne(cascade= {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH, CascadeType.REMOVE})
@@ -88,12 +88,12 @@ public class UserDonation {
         this.text = text;
     }
 
-    public User getUser() {
-        return user;
+    public AppUser getUser() {
+        return appUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     public Donation getDonation() {
@@ -113,7 +113,7 @@ public class UserDonation {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", text='" + text + '\'' +
-                ", user=" + user +
+                ", user=" + appUser +
                 ", donation=" + donation +
                 '}';
     }

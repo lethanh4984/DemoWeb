@@ -1,14 +1,11 @@
 package ASM1.demo.repository;
 
 import ASM1.demo.entity.DonationStatus;
-import ASM1.demo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface DonationStatusRepository extends JpaRepository<DonationStatus,Integer> {
 
     @Query("SELECT u from DonationStatus u where u.name like %?1%")

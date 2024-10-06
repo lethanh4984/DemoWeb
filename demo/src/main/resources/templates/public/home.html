@@ -44,7 +44,7 @@
 
 <div id="overlayer"></div>
 <div class="loader">
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-primary" appRole="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div>
@@ -85,7 +85,7 @@
 
                 <div class="text-right d-flex aligin-items-end col-12">
                     <div class="ml-auto">
-                        <a href="/user/logout" th:if="${session.user}"
+                        <a th:href="@{/api/users/logout}" th:if="${session.user}"
                            class="btn btn-primary border-width-2 d-none d-lg-inline-block">Log Out</a>
                         <a th:href="@{/login}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
                                 class="mr-2 icon-lock_outline"></span>Log In</a>
@@ -129,7 +129,7 @@
                             <div class="job-listing-position custom-width  mb-3 mb-sm-0"
                                  style="padding: 10px;width: 250px">
                                 <strong><a th:text="${donation.name}"
-                                           th:href="@{/showDonationInfo/{donationId}(donationId=${donation.id})}"></a></strong>
+                                           th:href="@{/api/users/showDonationInfo/{donationId}(donationId=${donation.id})}"></a></strong>
                                 <br>
                                 <strong th:text="${donation.donationStatus.name}"> </strong>
                             </div>
@@ -160,10 +160,11 @@
 
                         </div>
                     </li>
+
                     <!-- Modal -->
-                    <div class="modal fade" role="dialog" aria-labelledby="exampleModalLabel"
+                    <div class="modal fade" appRole="dialog" aria-labelledby="exampleModalLabel"
                          aria-hidden="true" th:id="'userDonationInfo' +${donation.id}">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog" appRole="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title"> Quyên góp: <span

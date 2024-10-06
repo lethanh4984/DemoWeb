@@ -1,10 +1,8 @@
-package ASM1.demo.service;
+package ASM1.demo.service.donationStatus;
 
 import ASM1.demo.entity.DonationStatus;
-import ASM1.demo.repository.DonationStatusRepository;
 
 public interface DonationStatusService {
-
 
     DonationStatus findDonationStatusById(int donationStatusId);
     void save(DonationStatus donationStatus);

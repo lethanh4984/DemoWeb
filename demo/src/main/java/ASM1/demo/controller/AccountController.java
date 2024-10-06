@@ -2,8 +2,8 @@ package ASM1.demo.controller;
 
 import ASM1.demo.entity.Donation;
 import ASM1.demo.entity.UserDonation;
-import ASM1.demo.service.DonationService;
-import ASM1.demo.service.UserDonationService;
+import ASM1.demo.service.donation.DonationService;
+import ASM1.demo.service.userDonation.UserDonationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -79,9 +79,5 @@ public class AccountController {
         return "redirect:/";
     }
 
-    @PostMapping("/login")
-    public String login(){
 
-        return "admin/login";
-    }
 }

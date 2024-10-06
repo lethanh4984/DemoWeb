@@ -1,6 +1,6 @@
-package ASM1.demo.service;
+package ASM1.demo.service.role;
 
-import ASM1.demo.entity.Role;
+import ASM1.demo.entity.AppRole;
 import ASM1.demo.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +17,17 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public Role findRole(int roleId) {
-        Optional<Role> result = roleRepository.findById(roleId);
+    public AppRole findRole(int roleId) {
+        Optional<AppRole> result = roleRepository.findById(roleId);
 
-        Role role = null;
+        AppRole appRole = null;
 
         if(result.isPresent()){
-            role=result.get();
+            appRole =result.get();
         }else {
             throw new RuntimeException("Did not find role id - " + roleId);
         }
 
-        return role;
+        return appRole;
     }
 }

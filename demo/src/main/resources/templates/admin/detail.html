@@ -37,7 +37,7 @@
     <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a th:if="${session.admin}" class="nav-link dropdown-toggle" href="/admin/logout" role="button" ><i class="fas fa-user fa-fw"></i><span> Logout</span></a>
+                <a th:if="${session.admin}" class="nav-link dropdown-toggle" href="/admin/logout" appRole="button" ><i class="fas fa-appUser fa-fw"></i><span> Logout</span></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Activity Log</a></li>

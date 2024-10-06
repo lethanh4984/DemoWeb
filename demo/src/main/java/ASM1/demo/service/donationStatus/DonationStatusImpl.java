@@ -1,7 +1,6 @@
-package ASM1.demo.service;
+package ASM1.demo.service.donationStatus;
 
 import ASM1.demo.entity.DonationStatus;
-import ASM1.demo.entity.Role;
 import ASM1.demo.repository.DonationStatusRepository;
 import org.springframework.stereotype.Service;
 
